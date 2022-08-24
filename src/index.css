@@ -80,7 +80,7 @@ h4 {
   margin-bottom: 0.75rem;
 }
 h1 {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 h2 {
   font-size: 2rem;
@@ -118,4 +118,54 @@ p {
     line-height: 1;
   }
 }
+
+/*Loading Spinner*/
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 70px;
+  height: 70px;
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #2caeba; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
+
 /*  global classes */
+main {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.underline {
+  width: 90px;
+  height: 4px;
+  background-color: #2caeba;
+}
+
+.btn {
+  background: transparent;
+  border: transparent;
+}
+
+.active {
+  border-bottom: 2px solid #2caeba;
+}
