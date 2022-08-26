@@ -8,59 +8,72 @@ function App() {
   const [experience, setExperience] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [value, setValue] = useState(0);
-  
+
   const fetchData = async () => {
     const response = await fetch(url);
     const experience = await response.json();
     setExperience(experience);
     setIsLoading(false);
-  }
+  };
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
 
-  if(isLoading) {
+  if (isLoading) {
     return (
-      <main>
-        <h1>Experience</h1>
-        <div className="underline"></div>
+      <>
+        <div className="title">
+          <h1>Experience</h1>
+          <div className="underline"></div>
+        </div>
         <LoadingSpinner />
-      </main>
-    )
+      </>
+    );
   }
 
-  const { title, company, dates, duties} = experience[value];
+  const { title, company, dates, duties } = experience[value];
 
   return (
     <main>
-      <h1>Experience</h1>
-      <div className="underline"></div>
+      <div className="title">
+        <h2>Experience</h2>
+        <div className="underline"></div>
+      </div>
 
       <div className="container">
-        <div className="tab-menu">
-          {experience.map((item, index) => {
-            return (
-              <button
-                className={value === index ? "btn active" : "btn"}
-                key={item.id}
-                onClick={() => {
-                  setValue(index)
-                }}>
-                {item.company}
-              </button>
-            );
-          })}
-        </div>
-        <div className="experience">
-          <h4> {title} </h4>
-          <span>{company}</span>
-          <span>{dates}</span>
-          <div className="duties">
-            {duties.map((duty, index) => {
-              return <p key={index}><span><FaAngleDoubleRight/></span>{duty}</p>;
+        <section>
+          <div className="tab-menu">
+            {experience.map((item, index) => {
+              return (
+                <button
+                  className={value === index ? "btn active" : "btn tab"}
+                  key={item.id}
+                  onClick={() => {
+                    setValue(index);
+                  }}
+                >
+                  {item.company}
+                </button>
+              );
             })}
           </div>
-        </div>
+          <div className="experience">
+            <h4> {title} </h4>
+            <span>{company}</span>
+            <p className="muted">{dates}</p>
+            <div className="duties">
+              {duties.map((duty, index) => {
+                return (
+                  <p key={index} className="duty">
+                    <FaAngleDoubleRight className="icon" />
+                    {duty}
+                  </p>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+        <button className="btn more-info">More Info</button>
       </div>
     </main>
   );
