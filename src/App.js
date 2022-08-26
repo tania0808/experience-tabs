@@ -7,42 +7,45 @@ const url = "https://course-api.com/react-tabs-project";
 function App() {
   const [experience, setExperience] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeExperience, setActiveExperience] = useState({});
-  const [isActiveTab, setIsActiveTab] = useState("recAGJfiU4CeaV0HL");
-  const { title, company, dates, duties } = activeExperience;
-
-  useEffect(() => {
-    fetch(url)
-    .then((res) => res.json())
-    .then((res) => {
-      setExperience(res);
-      setActiveExperience(res[0]);
-      setIsLoading(false);
-    });
-  }, []);
+  const [value, setValue] = useState(0);
   
-  console.log(experience);
-  const filterExp = (id) => {
-    const filteredExp = experience.filter((exp) => exp.id === id);
-    setActiveExperience(filteredExp[0]);
-    setIsActiveTab(id);
-  };
+  const fetchData = async () => {
+    const response = await fetch(url);
+    const experience = await response.json();
+    setExperience(experience);
+    setIsLoading(false);
+  }
+  useEffect(() => {
+    fetchData()
+  }, []);
+
+  if(isLoading) {
+    return (
+      <main>
+        <h1>Experience</h1>
+        <div className="underline"></div>
+        <LoadingSpinner />
+      </main>
+    )
+  }
+
+  const { title, company, dates, duties} = experience[value];
 
   return (
     <main>
       <h1>Experience</h1>
       <div className="underline"></div>
-      {isLoading 
-      ? <LoadingSpinner />
-      : <div className="container">
+
+      <div className="container">
         <div className="tab-menu">
           {experience.map((item, index) => {
             return (
               <button
-                className={isActiveTab === item.id ? "btn active" : "btn"}
+                className={value === index ? "btn active" : "btn"}
                 key={item.id}
-                onClick={() => filterExp(item.id)}
-              >
+                onClick={() => {
+                  setValue(index)
+                }}>
                 {item.company}
               </button>
             );
@@ -59,7 +62,6 @@ function App() {
           </div>
         </div>
       </div>
-      }
     </main>
   );
 }
